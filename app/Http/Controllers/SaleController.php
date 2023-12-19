@@ -8,7 +8,13 @@ use Illuminate\Http\Request;
 
 class SaleController extends Controller
 {
-    function transaction(Request $request)
+    function index(Request $request)
+    {
+        $items = DB::table('sales')->get();
+        
+        return view('pages.order', compact('items'));
+    }
+function transaction(Request $request)
     {
         $products = Product::all();
         $order = $request->session()->get('items') ?: [];
@@ -71,26 +77,30 @@ class SaleController extends Controller
 
         $items = session()->get('items');
         $result = [];
-        $amount = 0;
-        foreach ($items as $val) {
-
-            $amount += $val['qty'] * $val['amount'];
-        }
+        
 
         $id = DB::table('sales')->insertGetId(
-            ['client' => $request->client, 'contacts' => $request->contacts, 'amount' => $amount, 'user_id' => 1]
+            ['client' => $request->client, 'contacts' => $request->contacts, 'amount' => $request->amount, 'user_id' => 1, 'created_at' => date("Y-m-d h:i:s")]
         );
 
         foreach ($items as $key => $val) {
             $result[] = [
-                "qty" => $val['qty'], "amount" => $val['qty'] * $val['amount'], "product_id" => $key, "sale_id" => $id
+                "qty" => $val['qty'], "amount" => $val['qty'] * $val['amount'], "product_id" => $key, "sale_id" => $id, 'created_at' => date("Y-m-d h:i:s")
             ];
+
+            $product = Product::find($key);
+
+            $product->qty = $product->qty - $key;
+
+            $product->save();
 
         }
 
         DB::table('sale_items')->insert($result);
-       // unset($items);
         $request->session()->forget('items');
         return redirect()->route('transaction');
+
     }
+
+
 }

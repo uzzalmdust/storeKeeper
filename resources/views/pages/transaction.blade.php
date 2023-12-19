@@ -87,7 +87,7 @@
                     <div class="row">
                         <form action="{{ route('order') }}" method="post" name="dataForm">
                             @csrf
-
+                            <input type="hidden" name="amount" value="{{ $value }}">
                             <div class="row align-items-center g-3">
                                 <div class="col-lg-4">
                                     <input type="text" class="form-control @error('client') is-invalid @enderror"
