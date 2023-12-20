@@ -22,17 +22,24 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#">
+                    <a class="nav-link menu-link" href="{{ route('products.index') }}">
                         <i data-feather="home" class="icon-dual"></i>
-                        <span data-key="t-dashboards">Dashboards</span>
+                        <span data-key="t-dashboards">Products</span>
+                    </a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('transaction') }}">
+                        <i data-feather="home" class="icon-dual"></i>
+                        <span data-key="t-dashboards">For Sale</span>
                     </a>
 
                 </li>
                 <!-- end Dashboard Menu -->
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#">
+                    <a class="nav-link menu-link" href="{{ route('history') }}">
                         <i data-feather="grid" class="icon-dual"></i>
-                        <span data-key="t-apps">Apps</span>
+                        <span data-key="t-apps">Transactions</span>
                     </a>
                 </li>
 

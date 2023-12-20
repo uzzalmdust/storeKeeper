@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -12,7 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::latest()->take(5)->get();
         return view('pages.products', compact('products'));
     }
 
@@ -37,7 +38,7 @@ class ProductController extends Controller
             'amount' => 'required | numeric',
         ]);
 
-        $data = array_merge($request->post(), ['user_id' => 1]);
+        $data = array_merge($request->post(), ['user_id' => Auth::id()]);
 
         Product::create($data);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -80,7 +81,7 @@ function transaction(Request $request)
         
 
         $id = DB::table('sales')->insertGetId(
-            ['client' => $request->client, 'contacts' => $request->contacts, 'amount' => $request->amount, 'user_id' => 1, 'created_at' => date("Y-m-d h:i:s")]
+            ['client' => $request->client, 'contacts' => $request->contacts, 'amount' => $request->amount, 'user_id' => Auth::id(), 'created_at' => date("Y-m-d h:i:s")]
         );
 
         foreach ($items as $key => $val) {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleController;
@@ -19,12 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/home-page', function () {
-    return view('pages.home');
-});
-Route::get('/products', function () {
-    return view('pages.product_create');
-});
+
 
 
 Route::get('/dashboard', function () {
@@ -35,15 +31,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/home-page', [HomeController::class, 'index'])->name('home');
+    Route::resource('/products', ProductController::class);
+
+    Route::get('/transactions', [SaleController::class, 'transaction'])->name('transaction');
+    Route::post('/add-item', [SaleController::class, 'addItemOnSession'])->name('addItem');
+    Route::post('/update-item', [SaleController::class, 'updateItemOnSession'])->name('updateItem');
+    Route::get('/delete-item/{id}', [SaleController::class, 'deleteItemOnSession'])->name('deleteItem');
+    Route::post('/orders', [SaleController::class, 'order'])->name('order');
+    Route::get('/sales-transaction-histories', [SaleController::class, 'index'])->name('history');
+
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-Route::resource('/products', ProductController::class);
-
-Route::get('/transactions', [SaleController::class, 'transaction'])->name('transaction');
-Route::post('/add-item', [SaleController::class, 'addItemOnSession'])->name('addItem');
-Route::post('/update-item', [SaleController::class, 'updateItemOnSession'])->name('updateItem');
-Route::get('/delete-item/{id}', [SaleController::class, 'deleteItemOnSession'])->name('deleteItem');
-Route::post('/orders', [SaleController::class, 'order'])->name('order');
-Route::get('/sales-transaction-histories', [SaleController::class, 'index'])->name('history');
